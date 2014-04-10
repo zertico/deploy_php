@@ -11,7 +11,7 @@
 #
 class deploy_php (
 
-	$webserver_name 		= params_lookup('webserver_name'),
+  $webserver_name 		= params_lookup('webserver_name'),
   $servicephp_name 		= params_lookup('servicephp_name'),
   $my_class           = undef,
 
@@ -19,13 +19,13 @@ class deploy_php (
 
 
   $chosen_webserver = $webserver_name ? {
-				'' 			=> "apache"
-				default => $deploy_php::webserver_name	
+			'' 			=> "apache",
+			default => $deploy_php::webserver_name
   } 
 	
 	$chosen_servicephp = $servicephp_name ? {
-				''			=>	"",
-				default => $deploy_php::servicephp_name
+			''			=>	"",
+			default => $deploy_php::servicephp_name
 	}
 
 	include $chosen_webserver
