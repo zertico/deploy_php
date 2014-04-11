@@ -1,0 +1,50 @@
+# File Managed by Puppet
+
+<% if @webserver_redirect_www -%>
+server {
+  listen <%= port %>;
+  server_name <%= name %>;
+  rewrite ^/(.*) http://www.<%= name %>/$1 permanent;
+}
+<% end -%>
+
+server {
+  listen <%= port %>; 
+  root  <%= docroot %>;
+<% if @webserver_redirect_www -%>
+  server_name www.<%= name %> <%= serveraliases %>;
+<% else -%>
+  server_name <%= name %> <%= serveraliases %>;
+<% end -%>
+
+  access_log  <%= scope.lookupvar('nginx::log_dir')%>/<%= name %>.access.log;
+  error_log  <%= scope.lookupvar('nginx::log_dir')%>/<%= name %>.error.log;
+
+  location / {
+    root <%= docroot %>;
+    index index.php index.html index.htm;
+    if (-f $request_filename) {
+      expires 30d;
+      break;
+    }
+    if (!-e $request_filename) {
+      rewrite ^(.+)$ /index.php?q=$1 last;
+    }
+  }
+
+  
+  location ~ \.php$ {
+    try_files $uri =404;
+
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+    fastcgi_pass   unix:/var/run/php5-fpm-<%= real_owner %>.sock;  # port where FastCGI processes were spawned
+    fastcgi_index  index.php;
+    fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;  # same path as above
+<% if @php_newrelic -%>
+    fastcgi_param PHP_VALUE           "newrelic.appname = <%= name %>";
+<% end -%>
+    include fastcgi_params;
+  }
+
+}

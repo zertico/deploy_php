@@ -5,8 +5,10 @@
 class deploy_php::params {
 
   $webserver_name = 'nginx'
-  $servicephp_name = 'php5fpm'
-
-  $dir_path_webserver = ''
+  $dir_path_webserver = '/home/vhosts'
+ 
+ 	file { "${dir_path_webserver}":
+				ensure => directory
+  } 
 
 }

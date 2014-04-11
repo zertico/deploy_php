@@ -12,22 +12,31 @@
 class deploy_php (
 
   $webserver_name 		= params_lookup('webserver_name'),
-  $servicephp_name 		= params_lookup('servicephp_name'),
-  $my_class           = undef,
+  $servicephp_name 		= ''
 
   ) inherits deploy_php::params {
 
 
   $chosen_webserver = $webserver_name ? {
-			'' 			=> "apache",
+			''			=> undef,
 			default => $deploy_php::webserver_name
   } 
-	
+
+  include $chosen_webserver		
+
+
 	$chosen_servicephp = $servicephp_name ? {
-			''			=>	"",
+			''			=> 'suphp',
 			default => $deploy_php::servicephp_name
 	}
 
-	include $chosen_webserver
-	include $chosen_servicephp
+	if $chosen_webserver == 'nginx' {
+			include php5fpm
+	} else {
+			if $chosen_servicephp == 'suphp' or $chosen_servicephp == 'php5' {
+					 apache::module { "${chosen_servicephp}":
+					    install_package => true,
+  				}	
+			}
+	}
 }

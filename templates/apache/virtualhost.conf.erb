@@ -1,0 +1,42 @@
+# File Managed by Puppet
+
+<VirtualHost *:80>
+        ServerAdmin webmaster@<%= name %>
+
+        ServerName <%= name %>:80
+        <% if aliases != "" -%>
+ServerAlias <%= aliases %>
+        <% end -%>
+
+        DocumentRoot <%= real_documentroot %>
+
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+
+        <Directory <%= real_documentroot %> >
+                Options -Indexes FollowSymLinks
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ScriptAlias /cgi-bin/ <%= real_documentroot %>/cgi-bin/
+        <Directory "<%= real_documentroot %>/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        #ErrorLog logs/<%= real_owner %>/<%= name %>-error_log
+        ErrorLog /var/log/apache2/<%= name %>-error_log
+
+        LogLevel warn
+
+        #CustomLog logs/<%= real_owner %>/<%= name %>-access.log combined
+        CustomLog /var/log/apache2/<%= name %>-access.log combined
+        ServerSignature On
+
+</VirtualHost>
