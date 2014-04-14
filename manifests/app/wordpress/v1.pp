@@ -26,11 +26,11 @@ define deploy_php::app::wordpress::v1 (
       mode => "0755",
     }
   }
-
-  file { ["/root/puppet","/root/puppet/wordpress","${directory}"]:
-    ensure => directory,
-    owner  => "root",
-    group  => "root",
+ 
+  file { "${directory}":
+				ensure => directory,
+				owner  => "root",
+				group  => "root",
   }
 
   puppi::netinstall { "netinstall_wordpress_${user_name}_${name}":
@@ -43,7 +43,7 @@ define deploy_php::app::wordpress::v1 (
     preextract_command  => "",
     postextract_command => "[ -d ${complete_path} ] || mkdir ${complete_path} && mv ${directory}/install/* ${complete_path}",
     work_dir            => "${directory}",
-    require             => File["/root/puppet","/root/puppet/wordpress","${directory}"],
+    require             => File["${directory}"],
   }    
 
   file { "${complete_path}wp-config.php":

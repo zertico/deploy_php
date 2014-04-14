@@ -14,7 +14,7 @@ define deploy_php::apache (
   $webserver_documentroot        = "/home/vhosts/${name}/public_html/",
   $webserver_create_documentroot = true,
   $webserver_php                 = true,
-  $webserver_php_conf_template   = 'deploy_php/suphp/php.ini.erb',
+  $webserver_php_conf_template   = 'deploy_php/php.ini.erb',
   $webserver_suphp_conf_template = 'deploy_php/suphp/suphp.conf',
   $webserver_template            = 'virtualhost.conf.erb',
   $webserver_template_path       = "deploy_php/apache", 

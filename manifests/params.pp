@@ -10,5 +10,12 @@ class deploy_php::params {
  	file { "${dir_path_webserver}":
 				ensure => directory
   } 
+ 
+  file { ["/root/puppet/","/root/puppet/wordpress"]:
+			ensure => directory,		
+  }
+
+
+ 
 
 }
