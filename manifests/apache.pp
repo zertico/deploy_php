@@ -16,9 +16,10 @@ define deploy_php::apache (
   $webserver_php                 = true,
   $webserver_php_conf_template   = 'deploy_php/php.ini.erb',
   $webserver_suphp_conf_template = 'deploy_php/suphp/suphp.conf',
+  $webserver_suphp_mod					 = 'deploy_php/suphp/suphp.conf-module',
   $webserver_template            = 'virtualhost.conf.erb',
   $webserver_template_path       = "deploy_php/apache", 
-	$apache_module								 = params_lookup('deploy_php::servicephp_name'),	
+	$apache_module								 = params_lookup('deploy_php::chosen_servicephp'),	
 	$application									 = ''
 	) {
 

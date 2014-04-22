@@ -37,115 +37,47 @@ Refer to http://github.com/stdmod/ for complete documentation on the common para
 
 ###Beginning with module deploy_php
 
-To install the package provided by the module just include it:
+To install the package nginx package and php5-fpm provided by the module just include it:
 
 ```puppet
      include deploy_php
 ```
 
-The main class arguments can be provided either via Hiera (from Puppet 3.x) or direct parameters:
+The main class arguments can be provided direct parameters to install apache and its modules:
 
 ```puppet
      class { 'deploy_php':
-       parameter => value,
+       	webserver_name => 'apache',
+     }
+		
+		 OR
+     
+     class { 'deploy_php':
+       	webserver_name => 'apache',
+			  servicephp_name => 'suphp'
      }
 ```
-
-The module provides also a generic define to manage any deploy_php configuration file:
-
-```puppet
-     deploy_php::conf { 'sample.conf':
-       content => '# Test',
-     }
-```
-
 ##Usage
 
-* A common way to use this module involves the management of the main configuration file via a custom template (provided in a custom site module):
+* A common way to use this module involves the deploy of wordpress:
 
 ```puppet
-     class { 'deploy_php':
-       config_file_template => 'site/deploy_php/deploy_php.conf.erb',
-     }
+	deploy_php::apache { "example.com":
+    	createdb                    => true,
+	    mysql_database_name         => 'm_example',
+	    mysql_password              => 'iyDPMHFBiwFX6',
+	    mysql_user                  => 'm_example',
+	    system_username_password    => 'ycG/UabGX1SSc',
+	    application									=> 'wordpress'		
+	} 
+
 ```
 
-* You can write custom templates that use setting provided but the config_file_options_hash paramenter
-
-```puppet
-     class { 'deploy_php':
-       config_file_template      => 'site/deploy_php/deploy_php.conf.erb',
-       config_file_options_hash  => {
-         opt  => 'value',
-         opt2 => 'value2',
-       },
-     }
-```
-
-* Use custom source (here an array) for main configuration file. Note that template and source arguments are alternative.
-
-```puppet
-     class { 'deploy_php':
-       config_file_source => [ "puppet:///modules/site/deploy_php/deploy_php.conf-${hostname}" ,
-                               "puppet:///modules/site/deploy_php/deploy_php.conf" ],
-     }
-```
-
-* Use custom source directory for the whole configuration directory, where present.
-
-```puppet
-     class { 'deploy_php':
-       config_dir_source  => 'puppet:///modules/site/deploy_php/conf/',
-     }
-```
-
-* Use custom source directory for the whole configuration directory and purge all the local files that are not on the dir.
-  Note: This option can be used to be sure that the content of a directory is exactly the same you expect, but it is desctructive and may remove files.
-
-```puppet
-     class { 'deploy_php':
-       config_dir_source => 'puppet:///modules/site/deploy_php/conf/',
-       config_dir_purge  => true, # Default: false.
-     }
-```
-
-* Use custom source directory for the whole configuration dir and define recursing policy.
-
-```puppet
-     class { 'deploy_php':
-       config_dir_source    => 'puppet:///modules/site/deploy_php/conf/',
-       config_dir_recursion => false, # Default: true.
-     }
-```
-
-* Provide an hash of files resources to be created with deploy_php::conf.
-
-```puppet
-     class { 'deploy_php':
-       conf_hash => {
-         'deploy_php.conf' => {
-           template => 'site/deploy_php/deploy_php.conf',
-         },
-         'deploy_php.other.conf' => {
-           template => 'site/deploy_php/deploy_php.other.conf',
-         },
-       },
-     }
-```
-
-* Do not trigger a service restart when a config file changes.
-
-```puppet
-     class { 'deploy_php':
-       config_dir_notify => '', # Default: Service[deploy_php]
-     }
-```
 
 ##Operating Systems Support
 
 This is tested on these OS:
-- RedHat osfamily 5 and 6
-- Debian 6 and 7
-- Ubuntu 10.04 and 12.04
+- Debian 7
 
 ##Development
 
