@@ -12,31 +12,21 @@
 class deploy_php (
 
   $webserver_name 		= params_lookup('webserver_name'),
-  $servicephp_name 		= ''
+  $apache_module      = params_lookup ('apache_module'),
+  $template_php_ini   = params_lookup('template_php_ini'),
+  $template_suphp_conf	= params_lookup('template_suphp_conf'),
+  $template_suphp_mod  	= params_lookup('template_suphp_mod')
+
 
   ) inherits deploy_php::params {
 
+  include $deploy_php::webserver_name
 
-  $chosen_webserver = $webserver_name ? {
-			''			=> undef,
-			default => $deploy_php::webserver_name
-  } 
-
-  include $chosen_webserver		
-
-
-	$chosen_servicephp = $servicephp_name ? {
-			''			=> 'suphp',
-			default => $deploy_php::servicephp_name
-	}
-
-	if $chosen_webserver == 'nginx' {
+	if $deploy_php::webserver_name == 'nginx' {
 			include php5fpm
 	} else {
-			if $chosen_servicephp == 'suphp' or $chosen_servicephp == 'php5' {
-					 apache::module { "${chosen_servicephp}":
-					    install_package => true,
-  				}	
+			if $deploy_php::apache_module == 'suphp' or $deploy_php::apache_module == 'php5' {
+					include deploy_php::environments::environment_apache
 			}
 	}
 }

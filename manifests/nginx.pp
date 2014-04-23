@@ -80,6 +80,7 @@ define deploy_php::nginx (
       homedir_mode     => "${system_user_homedir_mode}",
       tag              => "${system_user_tag}",
       password_salt    => "65941380",
+			require => File["${deploy_php::dir_path_webserver}"],
     }
 
     nginx::vhost { "${name}":
@@ -151,6 +152,7 @@ define deploy_php::nginx (
 	    	db_user => "${real_mysql_user}",
 	    	db_pass => "${real_mysql_password}",
 	    	db_host => 'localhost',
+				require => User::Managed ["${real_system_username}"]
 			}
 	}
 

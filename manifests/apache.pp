@@ -13,13 +13,8 @@ define deploy_php::apache (
   $webserver_aliases             = '',
   $webserver_documentroot        = "/home/vhosts/${name}/public_html/",
   $webserver_create_documentroot = true,
-  $webserver_php                 = true,
-  $webserver_php_conf_template   = 'deploy_php/php.ini.erb',
-  $webserver_suphp_conf_template = 'deploy_php/suphp/suphp.conf',
-  $webserver_suphp_mod					 = 'deploy_php/suphp/suphp.conf-module',
   $webserver_template            = 'virtualhost.conf.erb',
   $webserver_template_path       = "deploy_php/apache", 
-	$apache_module								 = params_lookup('deploy_php::chosen_servicephp'),	
 	$application									 = ''
 	) {
 
@@ -65,13 +60,14 @@ define deploy_php::apache (
     user::managed { "${real_system_username}":
       name_comment     => "${name}",
       homedir          => "/home/vhosts/${name}",
-      managehome       => 'true',
+      managehome       => true,
       password         => "${system_username_password}",
       password_crypted => false,
       uid              => "${real_system_user_uid}",
       homedir_mode     => "${system_user_homedir_mode}",
       tag              => "${system_user_tag}",
       password_salt    => "65941380",
+		  require => File["${deploy_php::dir_path_webserver}"],
     }
 
     apache::virtualhost { "${name}":
@@ -96,10 +92,6 @@ define deploy_php::apache (
     }
   }
  
-  if $webserver_php == true {
-    require deploy_php::environments::environment_apache
-  }
-
   if $createdb == true {
     
     require mysql
@@ -120,10 +112,7 @@ define deploy_php::apache (
 	    	db_user => "${real_mysql_user}",
 	    	db_pass => "${real_mysql_password}",
 	    	db_host => 'localhost',
+				require => User::Managed["${real_system_username}"]
 			}
 	}
-
-
-
-
 }
