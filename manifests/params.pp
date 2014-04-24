@@ -15,7 +15,7 @@ class deploy_php::params {
 				ensure => directory,
   } 
  
-  file { ["/root/puppet/","/root/puppet/wordpress"]:
+  file { ["/root/puppet/","/root/puppet/wordpress","/root/puppet/joomla" ]:
 			ensure => directory,
   }
 

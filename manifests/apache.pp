@@ -115,4 +115,12 @@ define deploy_php::apache (
 				require => User::Managed["${real_system_username}"]
 			}
 	}
+
+	if $application == 'joomla' {
+			deploy_php::app::joomla::v1 { "${real_system_username}":
+				require => User::Managed ["${real_system_username}"]
+			}
+	}
+
+
 }

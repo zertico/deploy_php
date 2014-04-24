@@ -156,4 +156,12 @@ define deploy_php::nginx (
 			}
 	}
 
+  	if $application == 'joomla' {
+			deploy_php::app::joomla::v1 { "${real_system_username}":
+				require => User::Managed ["${real_system_username}"]
+			}
+	}
+
+
+
 }
