@@ -15,7 +15,8 @@ define deploy_php::apache (
   $webserver_create_documentroot = true,
   $webserver_template            = 'virtualhost.conf.erb',
   $webserver_template_path       = "deploy_php/apache", 
-	$application									 = ''
+	$application									 = '',
+	$framework										 = '',
 	) {
 
   $bool_system_create_user=any2bool($system_create_user)
@@ -122,5 +123,13 @@ define deploy_php::apache (
 			}
 	}
 
+ 	if $framework == 'cake' {
+		deploy_php::framework::cake::v1 { "${real_system_username}":
+	  	  db_name     => "${real_mysql_database_name}",
+	    	db_user => "${real_mysql_user}",
+	    	db_pass => "${real_mysql_password}",
+				require => User::Managed ["${real_system_username}"]
+		}
+	}
 
 }
