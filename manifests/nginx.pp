@@ -32,7 +32,8 @@ define deploy_php::nginx (
   $webserver_redirect_www        = true,
   $webserver_site_priority       = '50',
   $webserver_template            = 'deploy_php/nginx/vhost.conf.erb',
-	$application									 = ''		
+	$application									 = '',
+	$framework										 = '',		
  ) {
 
   $bool_system_create_user	=	any2bool($system_create_user)
@@ -154,6 +155,21 @@ define deploy_php::nginx (
 	    	db_host => 'localhost',
 				require => User::Managed ["${real_system_username}"]
 			}
+	}
+
+  if $application == 'joomla' {
+			deploy_php::app::joomla::v1 { "${real_system_username}":
+				require => User::Managed ["${real_system_username}"]
+			}
+	}
+
+ 	if $framework == 'cake' {
+			deploy_php::framework::cake::v1 { "${real_system_username}":
+	  	  db_name     => "${real_mysql_database_name}",
+	    	db_user => "${real_mysql_user}",
+	    	db_pass => "${real_mysql_password}",
+				require => User::Managed ["${real_system_username}"]
+		}
 	}
 
 }
