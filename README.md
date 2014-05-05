@@ -73,6 +73,21 @@ The main class arguments can be provided direct parameters to install apache and
 
 ```
 
+* A common way to use this module involves the deploy of cake_php:
+
+```puppet
+	deploy_php::apache { "example.com":
+    	createdb                    => true,
+	    mysql_database_name         => 'm_example',
+	    mysql_password              => 'iyDPMHFBiwFX6',
+	    mysql_user                  => 'm_example',
+	    system_username_password    => 'ycG/UabGX1SSc',
+	    framework									=> 'cake'		
+	} 
+
+```
+
+
 
 ##Operating Systems Support
 
