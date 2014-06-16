@@ -52,7 +52,7 @@ define deploy_php::app::wordpress::v1 (
     owner   => "${user_name}",
     group   => "${user_name}",
     replace => false,
-    require => puppi::netinstall["netinstall_wordpress_${user_name}_${name}"],
+    require => Puppi::Netinstall["netinstall_wordpress_${user_name}_${name}"],
   }
 
 }

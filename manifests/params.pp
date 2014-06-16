@@ -4,19 +4,19 @@
 #
 class deploy_php::params {
 
-  $webserver_name = "nginx"
+  $webserver_name     = "nginx"
   $dir_path_webserver = "/home/vhosts"
   $apache_module      = "suphp"
   $template_php_ini   = "deploy_php/php.ini.erb"
   $template_suphp_conf	= "deploy_php/suphp/suphp.conf"
   $template_suphp_mod  	= "deploy_php/suphp/suphp.conf-module"
  
-	file { "${dir_path_webserver}":
-				ensure => directory,
+  file { "${dir_path_webserver}":
+	ensure => directory,
   } 
  
   file { ["/root/puppet/","/root/puppet/wordpress"]:
-			ensure => directory,
+	ensure => directory,
   }
 
   package { [ 'php5-mysql',
