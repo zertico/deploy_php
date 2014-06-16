@@ -4,7 +4,7 @@
 #
 class deploy_php::params {
 
-  $webserver_name = "nginx"
+  $webserver_name     = "nginx"
   $dir_path_webserver = "/home/vhosts"
   $apache_module      = "suphp"
   $template_php_ini   = "deploy_php/php.ini.erb"
@@ -15,7 +15,7 @@ class deploy_php::params {
 	ensure => directory,
   } 
  
-  file { ["/root/puppet/","/root/puppet/wordpress"]:
+  file { ["/root/puppet/","/root/puppet/wordpress","/root/puppet/joomla"]:
 	ensure => directory,
   }
 
