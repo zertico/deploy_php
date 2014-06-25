@@ -1,6 +1,6 @@
-#Class deploy_php::environments::environment_apache
+#Class: deploy_php::environments::environment_apache
 #
-class deploy_php::environments::environment_apache ( ) {
+class deploy_php::environments::environment_apache () {
 
   apache::module { $deploy_php::apache_module:
     install_package => true,
