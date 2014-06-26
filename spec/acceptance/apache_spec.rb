@@ -6,7 +6,6 @@ describe 'deploy_apache define' do
 			pp = <<-EOS
 			class { 'deploy_php':
                             webserver_name => 'apache',
-			    apache_module  => 'suphp'	
 			}
                         deploy_php::apache { 'example.com':
                          createdb => true,
