@@ -2,9 +2,9 @@ fixtures:
   repositories:
     stdlib: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
     stdmod: "git://github.com/stdmod/stdmod.git"
-    nginx: "https://github.com/netmanagers/puppet-nginx.git"
-    apache: "https://github.com/example42/puppet-apache"
-    php5fpm: "https://github.com/zertico/puppet-php5fpm.git"	
-    puppi:  "https://github.com/example42/puppi" 
+    nginx: "git://github.com/netmanagers/puppet-nginx.git"
+    apache: "git://github.com/example42/puppet-apache.git"
+    php5fpm: "git://github.com/zertico/puppet-php5fpm.git"	
+    puppi:  "git://github.com/example42/puppi.git" 
   symlinks:
     deploy_php: "#{source_dir}"

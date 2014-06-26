@@ -68,7 +68,7 @@ define deploy_php::apache (
       homedir_mode     => $system_user_homedir_mode,
       tag              => $system_user_tag,
       password_salt    => '65941380',
-      require          => File[$deploy_php::dir_path_webserver],
+      require          => File[$deploy_php::dir_path_webserver]
     }
 
   apache::virtualhost { $name:
