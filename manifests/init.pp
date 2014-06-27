@@ -14,7 +14,7 @@ class deploy_php (
   $apache_module        = $deploy_php::apache_module,
   $template_php_ini     = $deploy_php::template_php_ini,
   $template_suphp_conf  = $deploy_php::template_suphp_conf,
-  $template_suphp_mod   = $deploy_php::template_suphp_conf
+  $template_suphp_mod   = $deploy_php::template_suphp_mod
 ) inherits deploy_php::params {
 
   include $webserver_name
