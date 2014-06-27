@@ -164,7 +164,7 @@ define deploy_php::nginx (
   }
 
   if $framework == 'cake' {
-    deploy_php::app::cake::v1 { $real_system_username:
+    deploy_php::app::framework::cake::v1 { $real_system_username:
       db_name => $real_mysql_database_name,
       db_user => $real_mysql_user,
       db_pass => $real_mysql_password,
