@@ -9,10 +9,11 @@ describe 'deploy_php' do
 	    end	
    end	
    context  'testing with apache and suphp' do 
-        let(:params) {{:webserver_name => 'apache' }}
+        let(:params) {{:webserver_name => 'apache',:apache_module => 'suphp' }}
 	it do should contain_class('apache')
 	end   
-	it { should contain_class("deploy_php::environments::environment_apache") }
+	it do should contain_class("deploy_php::environments::environment_apache") 
+	end
    end
    context 'testing apache and php5' do
 	let(:params){{:webserver_name => 'apache',:apache_module => 'php5' }}
