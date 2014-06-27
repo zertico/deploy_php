@@ -8,7 +8,6 @@ define deploy_php::app::wordpress::v1 (
   $user_name      = $title,
   $complete_path  = "/home/vhosts/${name}/public_html/",
   $directory      = "/root/puppet/wordpress/${name}",
-  $which_server   = 'nginx',
   $groups         = $title
 ) {
 
@@ -20,15 +19,6 @@ define deploy_php::app::wordpress::v1 (
   $secure_auth_salt = sha1("secure_auth_salt${name}")
   $logged_in_salt   = sha1("logged_in_salt${name}")
   $nonce_salt       = sha1("nonce_salt${name}")
-
-  if $which_server == 'apache2' {
-    $groups = 'www-data'
-    file { "${complete_path}.htaccess":
-      ensure => 'file',
-      group  => $groups,
-      mode   => '0755',
-    }
-  }
 
   file { $directory:
     ensure => directory,
@@ -50,6 +40,7 @@ define deploy_php::app::wordpress::v1 (
   }
 
   file { "${complete_path}wp-config.php":
+    ensure  => present,
     content => template('deploy_php/wordpress/wp-config.php.erb'),
     mode    => '0755',
     owner   => $user_name,
