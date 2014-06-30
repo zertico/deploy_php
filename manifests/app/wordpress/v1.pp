@@ -26,7 +26,7 @@ define deploy_php::app::wordpress::v1 (
     group  => 'root',
   }
 
-  puppi::netinstall { "netinstall_wordpress_${user_name}_${name}":
+  puppi::netinstall { "netinstall_wordpress_${user_name}":
     url                 => 'http://wordpress.org/latest.tar.gz',
     extract_command     => 'tar --strip-components 1 -zxf',
     destination_dir     => "${directory}/install",

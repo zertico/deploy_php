@@ -15,6 +15,7 @@ describe 'deploy_php::app::wordpress::v1' do
                  'owner'  => 'root',
                  'group'  => 'root',  
              })end
+             it { should contain_puppi__netinstall('netinstall_wordpress_example.com')}
              it do should contain_file('/home/vhosts/example.com/public_html/wp-config.php').with({
                  'ensure'  => 'present',
                  'owner'   => 'example.com',

@@ -35,7 +35,7 @@ describe "deploy_php::environments::environment_apache",:type => :class do
         {
          :osfamily => 'Debian',
          :operatingsystem => 'Debian',
-         :operatingsystemrelease => '6.0',
+         :operatingsystemrelease => '7.0',
          :kernel => 'Linux',
        }
        end

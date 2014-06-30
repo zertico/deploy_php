@@ -10,5 +10,6 @@ describe 'deploy_php::app::joomla::v1' do
                  'group'  => 'root',  
              })
              end
+             it { should contain_puppi__netinstall('netinstall_joomla_example.com')} 
 	end
 end
