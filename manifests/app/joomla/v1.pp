@@ -1,9 +1,17 @@
 #Define deploy_php::app::joomla::v1
 #
 define deploy_php::app::joomla::v1 (
-  $complete_path  = "/home/vhosts/${name}/public_html/",
-  $directory      = "/root/puppet/joomla/${name}",
+  $url               = 'http://joomlacode.org/gf/download/frsrelease/19239/158104/Joomla_3.2.3-Stable-Full_Package.zip',
+  $complete_path     = "/home/vhosts/${name}/public_html/",
+  $directory         = "/root/puppet/joomla/${name}",
+  $typeOfCompression = 'zip'
 ){
+
+  $real_typeOfCompression  = $typeOfCompression ? {
+    'zip'    => 'unzip',
+    'tar.gz' => 'tar --strip-components 1 -zxf'
+  }
+
 
   file { $directory:
     ensure => directory,
@@ -12,8 +20,8 @@ define deploy_php::app::joomla::v1 (
   }
 
   puppi::netinstall { "netinstall_joomla_${name}":
-    url                 => 'http://joomlacode.org/gf/download/frsrelease/19239/158104/Joomla_3.2.3-Stable-Full_Package.zip',
-    extract_command     => 'unzip',
+    url                 => $url,
+    extract_command     => $real_typeOfCompression,
     destination_dir     => "${directory}/install",
     extracted_dir       => '.',
     owner               => $name,

@@ -8,7 +8,9 @@ define deploy_php::app::wordpress::v1 (
   $user_name      = $title,
   $complete_path  = "/home/vhosts/${name}/public_html/",
   $directory      = "/root/puppet/wordpress/${name}",
-  $groups         = $title
+  $groups         = $title,
+  $url            = 'http://wordpress.org/latest.tar.gz',
+  $typeOfCompression  = 'tar.gz'
 ) {
 
   $auth_key         = sha1("auth_key${name}")
@@ -20,6 +22,11 @@ define deploy_php::app::wordpress::v1 (
   $logged_in_salt   = sha1("logged_in_salt${name}")
   $nonce_salt       = sha1("nonce_salt${name}")
 
+  $real_typeOfCompression  = $typeOfCompression ? {
+    'zip'    => 'unzip',
+    'tar.gz' => 'tar --strip-components 1 -zxf'
+  }
+
   file { $directory:
     ensure => directory,
     owner  => 'root',
@@ -27,8 +34,8 @@ define deploy_php::app::wordpress::v1 (
   }
 
   puppi::netinstall { "netinstall_wordpress_${user_name}":
-    url                 => 'http://wordpress.org/latest.tar.gz',
-    extract_command     => 'tar --strip-components 1 -zxf',
+    url                 => $url,
+    extract_command     => $real_typeOfCompression,
     destination_dir     => "${directory}/install",
     extracted_dir       => '.',
     owner               => $user_name,
@@ -46,7 +53,7 @@ define deploy_php::app::wordpress::v1 (
     owner   => $user_name,
     group   => $user_name,
     replace => false,
-    require => Puppi::Netinstall["netinstall_wordpress_${user_name}_${name}"],
+    require => Puppi::Netinstall["netinstall_wordpress_${user_name}"],
   }
 
 }
